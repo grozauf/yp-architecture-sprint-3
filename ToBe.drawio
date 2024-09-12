@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-09-11T15:48:23.605Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.6.4 Chrome/124.0.6367.207 Electron/30.0.6 Safari/537.36" etag="_YHHQwscasOvsbLz3ypy" version="24.6.4" type="device">
+<mxfile host="Electron" modified="2024-09-12T05:48:43.114Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.6.4 Chrome/124.0.6367.207 Electron/30.0.6 Safari/537.36" etag="YWUBKGkJ1lzvIRt089uC" version="24.6.4" type="device">
   <diagram name="Page-1" id="UsNW1CG11SA1kaQBIMI0">
-    <mxGraphModel dx="11346" dy="9845" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="279" dy="4040" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -306,7 +306,7 @@
         <mxCell id="byD6cdz-UoJXL5TT6-PQ-26" value="Сервис сценариев" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="4420" y="-120" width="250" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="byD6cdz-UoJXL5TT6-PQ-27" value="&lt;font style=&quot;font-size: 17px;&quot;&gt;Postgres&lt;/font&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="byD6cdz-UoJXL5TT6-PQ-27" value="&lt;span style=&quot;font-size: 17px;&quot;&gt;Mongo&lt;/span&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="4610" y="-60" width="130" height="130" as="geometry" />
         </mxCell>
         <mxCell id="byD6cdz-UoJXL5TT6-PQ-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;endArrow=none;endFill=0;exitX=0.887;exitY=0.985;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="byD6cdz-UoJXL5TT6-PQ-37" target="byD6cdz-UoJXL5TT6-PQ-8" edge="1">
