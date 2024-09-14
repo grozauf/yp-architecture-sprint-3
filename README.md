@@ -95,10 +95,37 @@
 
 ### 3. Визуализация архитектуры
 
-#### C4 System Context diagram [icepanel](https://s.icepanel.io/WFXJZm3LIyohpS/ZAV9)
+#### Лучше смотреть в [icepanel](https://s.icepanel.io/WFXJZm3LIyohpS/ZAV9)
+
+#### C4 System Context diagram 
 ![task_1.2.3.0.png](task_1.2.3.0.png)
 
 #### C4 Containers diagram
+
+##### API-Gateway
+
+![task_1.2.3.1.1.png](task_1.2.3.1.1.png)
+
+##### Система мониторинга и логирования
+
+![task_1.2.3.1.2.png](task_1.2.3.1.2.png)
+
+
+##### Система управления умным домом
+
+![task_1.2.3.1.3.png](task_1.2.3.1.3.png)
+
+##### Система регистрации и настройки 
+
+![task_1.2.3.1.4.png](task_1.2.3.1.4.png)
+
+##### Система маршрутизации до блоков управления
+
+![task_1.2.3.1.5.png](task_1.2.3.1.5.png)
+
+##### Шина данных
+
+![task_1.2.3.1.6.png](task_1.2.3.1.6.png)
 
 #### C4 Components diagram
 
