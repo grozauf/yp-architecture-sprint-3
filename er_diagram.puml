@@ -54,7 +54,7 @@ entity DeviceProtocol {
 
 entity DeviceTargetValue {
     * id : int
-    -- 
+    --
     type : varchar
     value : float
     min : float
