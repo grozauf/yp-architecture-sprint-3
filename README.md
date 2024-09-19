@@ -98,34 +98,63 @@
 #### C4 System Context diagram 
 ![task_1.2.3.0.png](task_1.2.3.0.png)
 
-#### C4 Containers diagram
+#### C4 Containers diagram and Components diagram
 
-##### API-Gateway
+##### API-Gateway (Containers diagram)
 
 ![task_1.2.3.1.1.png](task_1.2.3.1.1.png)
 
-##### Система мониторинга и логирования
+##### Система мониторинга и логирования (Containers diagram)
 
 ![task_1.2.3.1.2.png](task_1.2.3.1.2.png)
 
+###### Сервис телеметрии (Components diagram)
 
-##### Система управления умным домом
+![task_1.2.3.1.2.1.png](task_1.2.3.1.2.1.png)
+
+###### Сервис логирования операций (Components diagram)
+
+![task_1.2.3.1.2.2.png](task_1.2.3.1.2.2.png)
+
+##### Система управления умным домом (Containers diagram)
 
 ![task_1.2.3.1.3.png](task_1.2.3.1.3.png)
 
-##### Система регистрации и настройки 
+###### Сервис управления умным домом (Components diagram)
+
+![task_1.2.3.1.3.1.png](task_1.2.3.1.3.1.png)
+
+###### Сервис сценариев (Components diagram)
+
+![task_1.2.3.1.3.2.png](task_1.2.3.1.3.2.png)
+
+##### Система регистрации и настройки (Containers diagram)
 
 ![task_1.2.3.1.4.png](task_1.2.3.1.4.png)
 
-##### Система маршрутизации до блоков управления
+###### Сервис профилей пользователей (Components diagram)
+
+![task_1.2.3.1.4.1.png](task_1.2.3.1.4.1.png)
+
+###### Сервис регистрации/учёта устройств (Components diagram)
+
+![task_1.2.3.1.4.2.png](task_1.2.3.1.4.2.png)
+
+##### Система маршрутизации до блоков управления (Containers diagram)
 
 ![task_1.2.3.1.5.png](task_1.2.3.1.5.png)
 
-##### Шина данных
+###### Proxy сервис для блоков управления (Components diagram)
+
+![task_1.2.3.1.5.1.png](task_1.2.3.1.5.1.png)
+
+##### Шина данных (Containers diagram)
 
 ![task_1.2.3.1.6.png](task_1.2.3.1.6.png)
 
 #### C4 Components diagram
+
+##### 
 
 
 ## 1.3 ER-диаграмма
@@ -206,8 +235,6 @@
   - value - значение
   - status - статус устройства
   - occurance_at - когда изменено целевое значение
-
-
 
 ### 1.3.3 Описание связей
 
