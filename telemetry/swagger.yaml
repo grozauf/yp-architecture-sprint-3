@@ -22,7 +22,6 @@ paths:
           schema:
             type: integer  
       responses:
-      responses:
         200:
           description: Информация по устройству
           content:
@@ -34,6 +33,7 @@ paths:
   /devices/{module_id}/{device_id}/telemetry:
     get:
       summary: Получение данных телеметрии
+      operationId: telemetryPaginated
       parameters:
         - name: module_id
           description: Идентификатор блока устройства
@@ -49,21 +49,13 @@ paths:
             type: integer  
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/perpage'
-      operationId: telemetryRead
       responses:
         200:
           description: Список значений
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/PaginatedResult'
-                  - type: object
-                    properties:
-                      results:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/TelemetryValue'  
+                $ref: '#/components/schemas/PaginatedValues'
 components:
   responses:
     Success:
@@ -76,34 +68,34 @@ components:
       name: page
       schema:
         type: integer
-        example: 1
+        default: 0
     perpage:
       in: query
-      name: per_page
+      name: perPage
       schema:
         type: integer
-        example: 15
-        default: 10
+        default: 100
   schemas:
     TelemetryValue:
       type: object
+      required:
+        - value
+        - occurance_at
       properties:
         value:
-          type: float
+          type: number
         occurance_at:
           type: string      
-    PaginatedResult:
+    PaginatedValues:
       type: object
+      required:
+        - hasMore
+        - values
       properties:
-        page:
-          type: number
-          example: 3
-        per_page:
-          type: number
-          example: 20
         hasMore:
           type: boolean
           example: false
-        results:
+        values:
           type: array
-          items: {}
+          items:
+            $ref: '#/components/schemas/TelemetryValue'
