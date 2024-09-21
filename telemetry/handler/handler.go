@@ -7,6 +7,7 @@ import (
 	"github.com/AlekSi/pointer"
 	"github.com/gin-gonic/gin"
 
+	conv "telemetry/converter"
 	"telemetry/repository"
 	"telemetry/swagger"
 )
@@ -46,13 +47,7 @@ func New(repo TelemetryRepository) *handler {
 }
 
 func (h *handler) TelemetryPaginated(c *gin.Context, moduleId int, deviceId int, params swagger.TelemetryPaginatedParams) {
-	perPage := pointer.Get(params.PerPage)
-	if perPage == 0 {
-		perPage = 100
-	}
-	if perPage > 500 {
-		perPage = 500
-	}
+	perPage := conv.NormalizePerPage(pointer.Get(params.PerPage))
 	page := pointer.Get(params.Page)
 
 	values, hasMore, err := h.repo.GetPaginated(c.Request.Context(), moduleId, deviceId, perPage, page*perPage)
@@ -61,21 +56,7 @@ func (h *handler) TelemetryPaginated(c *gin.Context, moduleId int, deviceId int,
 		return
 	}
 
-	result := swagger.PaginatedValues{
-		HasMore: hasMore,
-		Values: func() []swagger.TelemetryValue {
-			r := make([]swagger.TelemetryValue, 0, len(values))
-			for i := range values {
-				r = append(r, swagger.TelemetryValue{
-					Value:       values[i].Value,
-					OccuranceAt: values[i].OccuranceAt.String(),
-				})
-			}
-
-			return r
-		}(),
-	}
-	c.JSON(http.StatusOK, result)
+	c.JSON(http.StatusOK, conv.RepoToSwaggerPaginatedValues(values, hasMore))
 }
 
 func (h *handler) TelemetryLatests(c *gin.Context, moduleId int, deviceId int) {
@@ -85,11 +66,5 @@ func (h *handler) TelemetryLatests(c *gin.Context, moduleId int, deviceId int) {
 		return
 	}
 
-	c.JSON(
-		http.StatusOK,
-		swagger.TelemetryValue{
-			Value:       value.Value,
-			OccuranceAt: value.OccuranceAt.String(),
-		},
-	)
+	c.JSON(http.StatusOK, conv.RepoToSwaggerTelemetryValue(value))
 }
