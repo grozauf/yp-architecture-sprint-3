@@ -4,7 +4,7 @@ info:
   version: '1.0'
   description: API для управления устройствами
 paths:
-  /devices/{module_id}/{device_d}/get:
+  /manage/{module_id}/{device_id}/info:
     get:
       summary: Получить информацию по устройству
       operationId: deviceInfo
@@ -30,10 +30,10 @@ paths:
                 $ref: '#/components/schemas/DeviceInfo'
         404:
           $ref: '#/components/responses/NotFoundError'
-  /devices/{module_id}/{device_id}/set:
+  /manage/{module_id}/{device_id}/set:
     post:
       summary: Установить статус или целевое значение устройства
-      operationId: deviceSet
+      operationId: deviceSetValue
       parameters:
         - name: module_id
           description: Идентификатор блока устройства
@@ -52,10 +52,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Values'
+              $ref: '#/components/schemas/DeviceValue'
       responses:
         200:
-          $ref: '#/components/responses/DeviceValues'
+          description: Информация по устройству
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceValue'
         400:
           $ref: '#/components/responses/BadRequestError'
         404:
@@ -73,6 +77,10 @@ components:
     DeviceInfo:
       type: object
       description: Информация по устройству
+      required:
+        - type
+        - serial_number
+        - status
       properties:
         type:
           type: string
@@ -83,15 +91,22 @@ components:
         status:
           type: boolean
           description: Статус устройства - вкл/выкл
-    DeviceValues:
+    DeviceValue:
       type: object
       description: Новый статус или целевое значение
+      required:
+        - value_name
       properties:
+        value_name:
+          type: string
+          description: Какое значение передаётся
+          enum:
+            - target_value
+            - status
         target_value:
-          type: float
+          type: number
           description: Целевое значение
-          required: false
         status:
           type: boolean
-          description: Статус устройства (вкл/выкл)
-          required: false
+          description: Значение статуса устройства (вкл/выкл)
+

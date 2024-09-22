@@ -26,3 +26,14 @@ type TelemetryPaginatedParams struct {
 	Page    *Page    `form:"page,omitempty" json:"page,omitempty"`
 	PerPage *Perpage `form:"perPage,omitempty" json:"perPage,omitempty"`
 }
+
+type DeviceInfo struct {
+	// SerialNumber Серийный номер устройства
+	SerialNumber string `json:"serial_number"`
+
+	// Status Статус устройства - вкл/выкл
+	Status bool `json:"status"`
+
+	// Type Тип устройства
+	Type string `json:"type"`
+}

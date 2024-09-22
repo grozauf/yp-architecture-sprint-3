@@ -9,3 +9,8 @@ type CommandTelemetryResult struct {
 	Err     *string                  `json:"err"`
 }
 
+type CommandManagementResult struct {
+	Action string              `json:"action"`
+	Info   *swagger.DeviceInfo `json:"info"`
+	Err    *string             `json:"err"`
+}

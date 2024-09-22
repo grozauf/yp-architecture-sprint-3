@@ -11,6 +11,15 @@ services:
         paths:
           - /devices
         strip_path: false
+  - host: management
+    name: management
+    port: 8080
+    protocol: http
+    routes:
+      - name: management
+        paths:
+          - /manage
+        strip_path: false
 plugins:
   - name: cors
     config:

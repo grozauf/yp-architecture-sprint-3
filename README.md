@@ -1,4 +1,4 @@
-# Smart Home
+# 1. Smart Home
 
 ## Описание
 
@@ -271,77 +271,30 @@ ER-диаграмму я не стал бить по различным БД, а
 
 Описание API можно посмотреть [тут](./telemetry/swagger.yaml)
 
-# Базовая настройка
+# 2. Разработка MVP
 
-## Запуск minikube
-
-[Инструкция по установке](https://minikube.sigs.k8s.io/docs/start/)
-
-```bash
-minikube start
-```
+Что в MVP:
+- два сервиса, API которых описанно в п.п. 1.4.x. Также они могут взаимодействовать с монолитом через шину данных
+- API Gateway Kong, который публикует API двух микросервисов наружу
+- Zookeeper и Kafka для работы шинны данных
+- сервис test-async, который имитирует работу монолита в плане отправки асинк. сообщений двум микросервисам
 
 
-## Добавление токена авторизации GitHub
-
-[Получение токена](https://github.com/settings/tokens/new)
+Для запуска MVP нужно выполнить команду в корне проекта:
 
 ```bash
-kubectl create secret docker-registry ghcr --docker-server=https://ghcr.io --docker-username=<github_username> --docker-password=<github_token> -n default
+docker-compose -f ./compose.yaml up
 ```
 
-
-## Установка API GW kusk
-
-[Install Kusk CLI](https://docs.kusk.io/getting-started/install-kusk-cli)
+Для того чтобы убедиться, что публичное API работает, нужно выполнить скрипт в корне проекта:
 
 ```bash
-kusk cluster install
+./check_api.sh
 ```
 
+Для того чтобы убедиться, что работает асинхронное взаимодействие, нужно посмотреть логи контейнера test-async. Данный сервис постоянно отправляет два асинхронных сообщения: 
+- для получения последнего значения телеметрии (сервис телеметрии)
+- для получения информации об устройстве (сервис управления)
 
-## Настройка terraform
+Также данный сервис выполняет получение результатов на свои запросы и вывод их в консоль
 
-[Установите Terraform](https://yandex.cloud/ru/docs/tutorials/infrastructure-management/terraform-quickstart#install-terraform)
-
-
-Создайте файл ~/.terraformrc
-
-```hcl
-provider_installation {
-  network_mirror {
-    url = "https://terraform-mirror.yandexcloud.net/"
-    include = ["registry.terraform.io/*/*"]
-  }
-  direct {
-    exclude = ["registry.terraform.io/*/*"]
-  }
-}
-```
-
-## Применяем terraform конфигурацию 
-
-```bash
-cd terraform
-terraform apply
-```
-
-## Настройка API GW
-
-```bash
-kusk deploy -i api.yaml
-```
-
-## Проверяем работоспособность
-
-```bash
-kubectl port-forward svc/kusk-gateway-envoy-fleet -n kusk-system 8080:80
-curl localhost:8080/hello
-```
-
-
-## Delete minikube
-
-```bash
-minikube delete
-```

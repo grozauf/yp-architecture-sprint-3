@@ -20,3 +20,8 @@ type CommandTelemetryIn struct {
 	Device          Device            `json:"device"`
 	PaginatedParams *PaginationParams `json:"paginated_params"`
 }
+
+type ManagementCommand struct {
+	Action string `json:"action"`
+	Device Device `json:"device"`
+}

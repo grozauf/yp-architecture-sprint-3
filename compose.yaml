@@ -90,6 +90,22 @@ services:
     networks:
       - backend
       - internal
+
+  management:
+    build: ./device_management/
+    ports:
+      - 8020:8080
+    environment:
+      PORT: 8080
+      KAFKA: kafka:29092
+    depends_on:
+      kafka:
+        condition: service_healthy
+      kong:
+        condition: service_healthy
+    networks:
+      - backend
+      - internal
   
   test-async:
     build: ./test-async/

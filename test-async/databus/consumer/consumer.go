@@ -9,7 +9,8 @@ import (
 )
 
 const (
-	telemetryTopicResult = "telemetry_result"
+	telemetryTopicResult  = "telemetry_result"
+	managementTopicResult = "management_result"
 )
 
 type Consumer struct {
@@ -27,7 +28,7 @@ func New(address string) (*Consumer, error) {
 	}, nil
 }
 
-func (c *Consumer) ProcessTelemetryCommands(ctx context.Context) {
+func (c *Consumer) ProcessTelemetryResults(ctx context.Context) {
 	partConsumer, err := c.consumer.ConsumePartition(telemetryTopicResult, 0, sarama.OffsetNewest)
 	if err != nil {
 		log.Panicf("failed to create consumer: %v", err)
@@ -50,7 +51,38 @@ func (c *Consumer) ProcessTelemetryCommands(ctx context.Context) {
 				continue
 			}
 
-			log.Printf("[consumer] got telemetry result: %v", result)
+			log.Printf("[consumer] got TELEMETRY result: %v", result)
+		case <-ctx.Done():
+			log.Printf("[consumer] context done")
+			return
+		}
+	}
+}
+
+func (c *Consumer) ProcessManagementResults(ctx context.Context) {
+	partConsumer, err := c.consumer.ConsumePartition(managementTopicResult, 0, sarama.OffsetNewest)
+	if err != nil {
+		log.Panicf("failed to create consumer: %v", err)
+	}
+
+	defer partConsumer.Close()
+
+	for {
+		select {
+		case msg, ok := <-partConsumer.Messages():
+			if !ok {
+				log.Printf("[consumer] channel closed, exiting")
+				return
+			}
+
+			var result CommandManagementResult
+			err := json.Unmarshal(msg.Value, &result)
+			if err != nil {
+				log.Printf("[consumer] failed to unmarshal management info message: %v", err)
+				continue
+			}
+
+			log.Printf("[consumer] got MANAGEMENT info result: %s", string(msg.Value))
 		case <-ctx.Done():
 			log.Printf("[consumer] context done")
 			return

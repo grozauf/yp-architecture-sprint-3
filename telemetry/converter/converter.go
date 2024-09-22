@@ -33,7 +33,7 @@ func RepoToSwaggerTelemetryValue(value repository.TelemetryValue) swagger.Teleme
 
 func NormalizePerPage(perPage int) int {
 	if perPage == 0 {
-		perPage = 100
+		perPage = 5
 	}
 	if perPage > 500 {
 		perPage = 500

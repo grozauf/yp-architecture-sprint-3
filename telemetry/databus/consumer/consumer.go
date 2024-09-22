@@ -69,14 +69,14 @@ func (c *Consumer) ProcessTelemetryCommands(ctx context.Context) {
 		select {
 		case msg, ok := <-partConsumer.Messages():
 			if !ok {
-				log.Printf("Channel closed, exiting")
+				log.Printf("[consumer] message channel closed")
 				return
 			}
 
 			var cmd CommandTelemetryIn
 			err := json.Unmarshal(msg.Value, &cmd)
 			if err != nil {
-				log.Printf("Can't unmarshal message: %v", err)
+				log.Printf("[consumer] failed to unmarshal message: %s", err.Error())
 				continue
 			}
 
@@ -116,7 +116,7 @@ func (c *Consumer) ProcessTelemetryCommands(ctx context.Context) {
 			}
 
 		case <-ctx.Done():
-			log.Printf("Got done from context")
+			log.Printf("[consumer] context done")
 			return
 		}
 	}

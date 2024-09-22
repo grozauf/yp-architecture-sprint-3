@@ -31,21 +31,23 @@ func main() {
 	if err != nil {
 		log.Panicf("failed to start kafka producer: %s\n", err.Error())
 	}
-	go producer.ProcessTelemetryResults(ctx)
+	go producer.ProcessTelemetryCommands(ctx)
+	go producer.ProcessManagementCommands(ctx)
 
 	consumer, err := consumer.New(kafkaAddress)
 	if err != nil {
 		log.Panicf("failed to start kafka consumer: %s\n", err.Error())
 	}
-	go consumer.ProcessTelemetryCommands(ctx)
+	go consumer.ProcessTelemetryResults(ctx)
+	go consumer.ProcessManagementResults(ctx)
 
 	// Trap SIGINT to trigger a graceful shutdown.
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt)
 
 	for {
-		log.Printf("[test_async] produce telemetry cmd '%s'\n", prdcr.CommandTelemetryLatest)
-		err = producer.Produce(ctx, prdcr.CommandTelemetryIn{
+		log.Printf("[test_async] produce TELEMETRY cmd '%s'\n", prdcr.CommandTelemetryLatest)
+		err = producer.ProduceTelemetryRequest(ctx, prdcr.CommandTelemetryIn{
 			Action: prdcr.CommandTelemetryLatest,
 			Device: prdcr.Device{
 				Id:       0,
@@ -53,7 +55,21 @@ func main() {
 			},
 		})
 		if err != nil {
-			log.Printf("produce cmd failed: %s\n", err)
+			log.Printf("[test_async] produce telemetry cmd failed: %s\n", err)
+		}
+
+		time.Sleep(time.Second)
+
+		log.Printf("[test_async] produce MANAGEMENT cmd 'info'\n")
+		err = producer.ProduceManageCmd(ctx, prdcr.ManagementCommand{
+			Action: "info",
+			Device: prdcr.Device{
+				Id:       0,
+				ModuleId: 0,
+			},
+		})
+		if err != nil {
+			log.Printf("[test_async] produce management cmd failed: %s\n", err)
 		}
 
 		select {
