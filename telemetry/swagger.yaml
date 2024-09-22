@@ -1,0 +1,101 @@
+openapi: 3.0.3
+info:
+  title: Телеметрия устройства
+  version: '1.0'
+  description: API для работы с сервисом Телеметрии
+paths:
+  /devices/{module_id}/{device_id}/telemetry/latest:
+    get:
+      summary: Получение последнего значения телеметрии
+      operationId: telemetryLatests
+      parameters:
+        - name: module_id
+          description: Идентификатор блока устройства
+          required: true
+          in: path
+          schema:
+            type: integer
+        - name: device_id
+          description: Идентификатор устройства
+          required: true
+          in: path
+          schema:
+            type: integer  
+      responses:
+        200:
+          description: Информация по устройству
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelemetryValue'
+        404:
+          $ref: '#/components/responses/NotFoundError' 
+  /devices/{module_id}/{device_id}/telemetry:
+    get:
+      summary: Получение данных телеметрии
+      operationId: telemetryPaginated
+      parameters:
+        - name: module_id
+          description: Идентификатор блока устройства
+          required: true
+          in: path
+          schema:
+            type: integer
+        - name: device_id
+          description: Идентификатор устройства
+          required: true
+          in: path
+          schema:
+            type: integer  
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/perpage'
+      responses:
+        200:
+          description: Список значений
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedValues'
+components:
+  responses:
+    Success:
+      description: Успех
+    NotFoundError:
+      description: Устройство не найдено
+  parameters:
+    page:
+      in: query
+      name: page
+      schema:
+        type: integer
+        default: 0
+    perpage:
+      in: query
+      name: perPage
+      schema:
+        type: integer
+        default: 100
+  schemas:
+    TelemetryValue:
+      type: object
+      required:
+        - value
+        - occurance_at
+      properties:
+        value:
+          type: number
+        occurance_at:
+          type: string      
+    PaginatedValues:
+      type: object
+      required:
+        - hasMore
+        - values
+      properties:
+        hasMore:
+          type: boolean
+          example: false
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/TelemetryValue'

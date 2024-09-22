@@ -1,0 +1,92 @@
+@startuml er
+entity User {
+    * id : int
+    --
+    login : varchar
+    password : bytea
+    email : varchar
+    phone : varchar
+}
+
+entity House {
+    * id : int
+    --
+    name : varchar
+    user_id : int
+}
+
+entity Module {
+    * id : int
+    --
+    name : varchar
+    key : varchar
+    status : bool
+    user_id : int
+    house_id : int
+}
+
+entity Device {
+    * id : int
+    --
+    name : varchar
+    serial_number : varchar
+    status : bool
+    type_id : int
+    module_id: int
+}
+
+entity DeviceType {
+    * id : int
+    --
+    type : varchar
+    protocol_id : int
+    target_value_id : int
+}
+
+entity DeviceProtocol {
+    * id : int
+    --
+    how_to_on : jsonb
+    how_to_off : jsonb
+    how_to_set_value : jsonb
+    how_to_get_info : jsonb
+}
+
+entity DeviceTargetValue {
+    * id : int
+    --
+    type : varchar
+    value : float
+    min : float
+    max : float
+}
+
+entity TelemetryData {
+    * id : int
+    --
+    value : float
+    device_id : int
+    occurance_at : datetime
+}
+
+entity TargetValueHistory {
+    * id : int
+    --
+    device_id : int
+    module_id : int
+    actor : varchar
+    value : float
+    status : bool
+    occurance_at : datetime
+}
+
+User ||--o{ House : "Может быть несколько домов"
+House ||--|{ Module : "Может содержать один или больше блоков управления"
+Module ||--o{ Device : "Может управлять несколькими устройствами"
+Device ||--o{ TelemetryData : "Может иметь несколько метрик"
+Device ||--|{ TargetValueHistory : "Может несколько раз менять своё состояние"
+Module ||--|{ TargetValueHistory : "Может несколько раз менять своё состояние"
+DeviceType ||--o{ Device : "Несколько устройств может иметь один тип"
+DeviceType ||--|| DeviceTargetValue: "Один тип - одно целевое значение"
+DeviceType ||--|| DeviceProtocol: "Один тип - один протокол взаимодействия"
+@enduml

@@ -1,0 +1,112 @@
+openapi: 3.0.3
+info:
+  title: Управление устройствами
+  version: '1.0'
+  description: API для управления устройствами
+paths:
+  /manage/{module_id}/{device_id}/info:
+    get:
+      summary: Получить информацию по устройству
+      operationId: deviceInfo
+      parameters:
+        - name: module_id
+          description: Идентификатор блока устройства
+          required: true
+          in: path
+          schema:
+            type: integer
+        - name: device_id
+          description: Идентификатор устройства
+          required: true
+          in: path
+          schema:
+            type: integer        
+      responses:
+        200:
+          description: Информация по устройству
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceInfo'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+  /manage/{module_id}/{device_id}/set:
+    post:
+      summary: Установить статус или целевое значение устройства
+      operationId: deviceSetValue
+      parameters:
+        - name: module_id
+          description: Идентификатор блока устройства
+          required: true
+          in: path
+          schema:
+            type: integer
+        - name: device_id
+          description: Идентификатор устройства
+          required: true
+          in: path
+          schema:
+            type: integer        
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceValue'
+      responses:
+        200:
+          description: Информация по устройству
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceValue'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+      
+components:
+  responses:
+    Success:
+      description: Успех
+    NotFoundError:
+      description: Устройство не найдено
+    BadRequestError:
+      description: Ошибка входных данных
+  schemas:
+    DeviceInfo:
+      type: object
+      description: Информация по устройству
+      required:
+        - type
+        - serial_number
+        - status
+      properties:
+        type:
+          type: string
+          description: Тип устройства
+        serial_number:
+          type: string
+          description: Серийный номер устройства
+        status:
+          type: boolean
+          description: Статус устройства - вкл/выкл
+    DeviceValue:
+      type: object
+      description: Новый статус или целевое значение
+      required:
+        - value_name
+      properties:
+        value_name:
+          type: string
+          description: Какое значение передаётся
+          enum:
+            - target_value
+            - status
+        target_value:
+          type: number
+          description: Целевое значение
+        status:
+          type: boolean
+          description: Значение статуса устройства (вкл/выкл)
+
